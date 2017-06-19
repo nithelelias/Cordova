@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "https://github.com/ToniKorin/cordova-plugin-autostart.git",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "https://github.com/ToniKorin/cordova-plugin-autostart.git",
+        "spec": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:ToniKorin/cordova-plugin-autostart.git",
+          "sshUrl": "git+ssh://git@github.com/ToniKorin/cordova-plugin-autostart.git",
+          "httpsUrl": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
+          "gitUrl": "git://github.com/ToniKorin/cordova-plugin-autostart.git",
+          "shortcut": "github:ToniKorin/cordova-plugin-autostart",
+          "directUrl": "https://raw.githubusercontent.com/ToniKorin/cordova-plugin-autostart/master/package.json"
+        }
+      },
+      "E:\\Node\\Cordova\\apps\\withGps\\node_modules"
+    ]
+  ],
+  "_from": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
+  "_id": "cordova-plugin-autostart@2.0.1",
+  "_inCache": true,
+  "_location": "/cordova-plugin-autostart",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "https://github.com/ToniKorin/cordova-plugin-autostart.git",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "https://github.com/ToniKorin/cordova-plugin-autostart.git",
+    "spec": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:ToniKorin/cordova-plugin-autostart.git",
+      "sshUrl": "git+ssh://git@github.com/ToniKorin/cordova-plugin-autostart.git",
+      "httpsUrl": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
+      "gitUrl": "git://github.com/ToniKorin/cordova-plugin-autostart.git",
+      "shortcut": "github:ToniKorin/cordova-plugin-autostart",
+      "directUrl": "https://raw.githubusercontent.com/ToniKorin/cordova-plugin-autostart/master/package.json"
+    }
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git#5e65b530934ad907c435fa8f70dd238c1705384f",
+  "_shasum": "307ba1e900487cbe27135abf143314643bf6de16",
+  "_shrinkwrap": null,
+  "_spec": "https://github.com/ToniKorin/cordova-plugin-autostart.git",
+  "_where": "E:\\Node\\Cordova\\apps\\withGps\\node_modules",
+  "author": {
+    "name": "Toni Korin"
+  },
+  "bugs": {
+    "url": "https://github.com/ToniKorin/cordova-plugin-autostart/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-autostart",
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "\r\n        The application will be automatically started after the every boot and the automatic update of your application. \r\n        You can enable or disable the autostart function in your app.\r\n    ",
+  "devDependencies": {},
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "gitHead": "5e65b530934ad907c435fa8f70dd238c1705384f",
+  "homepage": "https://github.com/ToniKorin/cordova-plugin-autostart",
+  "keywords": [
+    "autostart",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "license": "Apache 2.0",
+  "name": "cordova-plugin-autostart",
+  "optionalDependencies": {},
+  "readme": "# Autostart plugin #\r\nThis [Cordova][cordova] plugin will start automatically your __Android__ app after the every boot or the auto-update of your application. You can enable or disable the autostart function in your app. The plugin is also compatible with [PhoneGap Build][PGB].\r\n\r\n## Supported Platforms ##\r\n- __Android__\r\n\r\n## Usage ##\r\n\r\n#### Enable the automatic startup after the boot  ####\r\n```javascript\r\ncordova.plugins.autoStart.enable();\r\n```\r\n#### Disable the automatic startup after the boot ####\r\nThis is the default action if you have never called the \"enable\" function.\r\n```javascript\r\ncordova.plugins.autoStart.disable();\r\n```\r\n\r\n## Installation ##\r\nThe plugin can either be installed from git repository, from local file system through the [Command-line Interface][CLI] or cloud based through [PhoneGap Build][PGB].\r\n\r\n#### Local development environment ####\r\nFrom master:\r\n```bash\r\n# ~~ from master branch ~~\r\ncordova plugin add https://github.com/ToniKorin/cordova-plugin-autostart.git\r\n```\r\nfrom a local folder:\r\n```bash\r\n# ~~ local folder ~~\r\ncordova plugin add cordova-plugin-autostart --searchpath path\r\n```\r\nor to use the latest stable version:\r\n```bash\r\n# ~~ stable version ~~\r\ncordova plugin add cordova-plugin-autostart@2.0.1\r\n```\r\n\r\nTo remove the plug-in, run the following command:\r\n```bash\r\ncordova plugin rm cordova-plugin-autostart\r\n```\r\n\r\n#### PhoneGap Build ####\r\nAdd the following xml line to your config.xml:\r\n```xml\r\n<gap:plugin platform=\"android\" name=\"cordova-plugin-autostart\" version=\"2.0.1\" source=\"npm\"/>\r\n```\r\n\r\n## Remarks ##\r\n1. Installation to the SD card will prevent the automatic start of your app after the boot. See more details from [here][stackoverflow_1].\r\n2. During the boot your app may start before it has no network connectivity. Your app have to take care of it e.g. using the cordova-plugin-network-information. \r\n\r\n## History ##\r\nCheck the [Change Log][changelog].\r\n\r\n## License ##\r\n\r\nThis software is released under the [Apache 2.0 License][apache2_license].\r\n\r\n© 2015 Toni Korin\r\n\r\n[cordova]: https://cordova.apache.org\r\n[CLI]: http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface\r\n[PGB]: http://docs.build.phonegap.com/en_US/index.html\r\n[PGB_plugin]: https://build.phonegap.com/plugins/490\r\n[changelog]: https://github.com/ToniKorin/cordova-plugin-autostart/blob/master/CHANGELOG.md\r\n[apache2_license]: http://opensource.org/licenses/Apache-2.0\r\n[stackoverflow_1]: http://stackoverflow.com/questions/9556944/broadcastreceiver-not-working-when-app-is-installed-on-sd-card",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git"
+  },
+  "version": "2.0.1"
+}

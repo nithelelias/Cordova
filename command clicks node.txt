@@ -1,0 +1,20 @@
+https://cordova.apache.org/#getstarted
+
+E:
+cd E:\Node\Cordova\apps...
+
+para instalar... neuvo .
+
+* npm install -g cordova
+* npm install -g ionic
+
+// PARA EJECUTAR...
+cd to app
+ionic serve
+ionic run android / ios
+ionic build android/ ios
+ionic emulate android/ios
+
+// IN CASE NOT RUN VERIFY THAT SDK HOME%/ tools/templates exist
+
+open at  http://localhost:4200/

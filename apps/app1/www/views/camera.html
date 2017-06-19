@@ -1,0 +1,9 @@
+<div ng-controller="CameraController as camCtrl">
+
+<button class="button button-block button-positive" ng-click="camCtrl.takePicture()">
+            Take a Picture
+        </button>
+ 
+<img class="padding" ng-src="{{camCtrl.imgSrc}}">
+
+</div>
