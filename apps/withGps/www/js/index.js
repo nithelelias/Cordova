@@ -18,6 +18,7 @@
  */
 var App = {
     Modules:{},
+    Controllers:{},
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -31,12 +32,35 @@ var App = {
      
         setUpBackground();
         setUpGeolocation();
-        setUpMap();
-    }  
+        
+        // DISPATCH 
+       this.broadcast("App.build");
+    },
+    broadcast:function(event_name,params){        
+      
+        document.dispatchEvent(new CustomEvent(event_name,{
+          detail:params
+        }));
+    },
+    on:function(event_name,callback){
+     
+      var wrapperFunc=function(e){
+        callback(e.detail,e);
+      };
+      var linkedFunc=function(){
+        try{
+          document.removeEventListener(event_name,wrapperFunc,false);
+        }catch(e){
+          console.error(e);
+        }
+      }
+       document.addEventListener(event_name,wrapperFunc,false);
+      return linkedFunc;
+    }
 };
 
 
-var isMobile = {
+App.isMobile = {
     Android: function() {
         return navigator.userAgent.match(/Android/i);
     },
@@ -53,7 +77,7 @@ var isMobile = {
         return navigator.userAgent.match(/IEMobile/i);
     },
     any: function() {
-        return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
+        return this.Android() || this.BlackBerry() || this.iOS() || this.Opera() || this.Windows();
     }
 };
 
@@ -61,7 +85,7 @@ var isMobile = {
  
 
 function setUpBackground(){
-    cordova.plugins.autoStart.enable();
+   // cordova.plugins.autoStart.enable();
     cordova.plugins.backgroundMode.configure({ silent: true });
     cordova.plugins.backgroundMode.enable();
   //  cordova.plugins.backgroundMode.excludeFromTaskList();   
@@ -84,163 +108,136 @@ function setUpGeolocation(){
     "IDLE":0,
     "OFF":1,
     "ON":2,
-    "NOT_SUPPORTED" :3
+    "NOT_SUPPORTED" :3,
+    "ERROR":4
   };
+  var ON_UPDATE_EVENT="GPS.update";
   // INITIALIZE MODULE
-  App.Modules.GPS={STATES:STATES,state:0,
-  position:null,
-  history:[],onUpdate:_onUpdateEvent,turnOn:_turnOn,turnOff:_turnOff};
-  
-  // SAVE THE IntervalId TO CLEAR
-  var getLocationInterval=null; 
-  var callBackOnUpdateListeners=[];
+  App.Modules.GPS={STATES:STATES,state:0,  position:null,  history:[],  onUpdate:_onUpdateEvent};
+ 
   
   // LISTENER OF CALLBACKS
   function _onUpdateEvent(_callBack){
-    var indexCallBack=callBackOnUpdateListeners.length;
-    callBackOnUpdateListeners.push(_callBack);
-    var linkedFunc=function(){
-      try{
-        delete callBackOnUpdateListeners[indexCallBack];
-      }catch(e){
-        console.error(e);
-      }
-    }
-    return linkedFunc;
-  }
-
-  function _dispatchUpdateCallbacks(position){
-    for(var i in callBackOnUpdateListeners){
-      if(callBackOnUpdateListeners[i]!=null){
-        callBackOnUpdateListeners[i](App.Modules.GPS.state,position);
-      }
-    }
-  } 
-
-  // REQUEST GEOLOCATION FROM NAVIGATOR
-  function _getLocation() {
-      if (navigator.geolocation) {
-          App.Modules.GPS.state=STATES.ON;
-          navigator.geolocation.getCurrentPosition(_getLocation_return);
-      } else {
-         App.Modules.GPS.state=STATES.NOT_SUPPORTED;
-      }
-  }
-
-  // WHEN GEOLOCATION HAS RETURN
-  function _getLocation_return(position) {
      
-      App.Modules.GPS.position=position;
-      App.Modules.GPS.history.push(position);
-      if(App.Modules.GPS.history.length>10){
-        App.Modules.GPS.history.shift();
-      } 
-      _dispatchUpdateCallbacks(position);
+    return App.on(ON_UPDATE_EVENT,_callBack);
   }
 
-  // TURN ON
-  function _turnOn(){ 
-    _turnOff();
-    App.Modules.GPS.state=STATES.IDLE;
-    getLocationInterval=setInterval(_getLocation,3000);  
+  // TO DISPATCH AN UPDATE
+  function _dispatchUpdateCallbacks(){
+    App.broadcast(ON_UPDATE_EVENT,App.Modules.GPS);
   } 
 
-  // TURN OFF
-  function _turnOff(){
-    if(getLocationInterval!=null){
-       clearInterval(getLocationInterval);
-    }
-    
-    getLocationInterval=null;
-    App.Modules.GPS.state=STATES.OFF;
+  
+  /** EXECCUTED IF IS AN NAVIGATOR */
+  function NavigatorHandler(){
+       // SAVE THE IntervalId TO CLEAR
+      var getLocationInterval=null; 
 
+      // REQUEST GEOLOCATION FROM NAVIGATOR
+      function _getLocation() {
+          if (navigator.geolocation) {
+              App.Modules.GPS.state=STATES.ON;
+              navigator.geolocation.getCurrentPosition(_getLocation_return);
+          } else {
+             App.Modules.GPS.state=STATES.NOT_SUPPORTED;
+                _dispatchUpdateCallbacks( );
+          }
+      }
+
+      // WHEN GEOLOCATION HAS RETURN
+      function _getLocation_return(position) {
+         position.latitude=position.coords.latitude;
+         position.longitude=position.coords.longitude;
+          App.Modules.GPS.position=position;
+          App.Modules.GPS.history.push(position);
+          if(App.Modules.GPS.history.length>10){
+            App.Modules.GPS.history.shift();
+          } 
+          _dispatchUpdateCallbacks( );
+      }
+
+     
+      // TURN ON
+      function _turnOn(){ 
+        _turnOff();
+        App.Modules.GPS.state=STATES.IDLE;
+        getLocationInterval=setInterval(_getLocation,3000);  
+      } 
+
+      // TURN OFF
+      function _turnOff(){
+        if(getLocationInterval!=null){
+           clearInterval(getLocationInterval);
+        }
+        
+        getLocationInterval=null;
+        App.Modules.GPS.state=STATES.OFF;
+        _dispatchUpdateCallbacks( );
+
+      } 
+      // START THIS
+      _turnOn();
+    }
+
+    /** EXECUTED IF IS AN MOVIL */
+  function MobileHandler(){
+    /**
+    * This callback will be executed every time a geolocation is recorded in the background.
+    */
+    var callbackFn = function(location) {
+   
+        console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+          App.Modules.GPS.state=App.Modules.GPS.STATES.ON;
+          App.Modules.GPS.position=location;
+          App.Modules.GPS.history.push(location);
+          if(App.Modules.GPS.history.length>10){
+            App.Modules.GPS.history.shift();
+          } 
+
+          _dispatchUpdateCallbacks();
+         
+        /*
+        IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
+        and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+        IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+        */
+        backgroundGeolocation.finish();
+        // NOW I STOP THIS SERVICE AND CONTINUE WITH NAVIGATION.
+        backgroundGeolocation.stop();
+    };
+
+    var failureFn = function(error) {
+        App.Modules.GPS.state=App.Modules.GPS.STATES.ERROR;
+        App.Modules.GPS.errorMsg=error;
+        console.log('BackgroundGeolocation error'); 
+          _dispatchUpdateCallbacks();
+    };
+
+    // BackgroundGeolocation is highly configurable. See platform specific configuration options
+    backgroundGeolocation.configure(callbackFn, failureFn, {
+        desiredAccuracy: 10,
+       // stationaryRadius: 20,
+        // distanceFilter: 30,
+        interval: 3000
+    });
+
+    // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+    backgroundGeolocation.start();
+
+    // If you wish to turn OFF background-tracking, call the #stop method.
+    // backgroundGeolocation.stop();
   }
 
-  // START THIS
-  _turnOn();
 
+  if(App.isMobile.any()){
+    MobileHandler();
+  } 
+  NavigatorHandler();
+   
 }
  
 
-/**
-  INITIALIZE MAP
-*/
-function setUpMap(){
 
-  var _map=null;
-  App.Modules.Map={
-      getMap:_getMap
-  };
-
-  function _getMap(){
-    return _map;
-  }
-
-  function _loadAsyncScript(){
-    
-    var scriptMap=document.createElement("script");  
-    scriptMap.type = 'text/javascript';
-    scriptMap.src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvJMOgSkpgaA5yQ9REBM_Uc5_I1mt589Q";
-    scriptMap.onload=_onAsyncScriptLoad;
-    document.body.appendChild(scriptMap);
-      
-  }
-  
-  function _onAsyncScriptLoad(){
-
-     _map=  new google.maps.Map(document.getElementById('map'), {
-          //center: {lat: -34.397, lng: 150.644},
-          scrollwheel: false,
-          zoom: 8,
-          fullscreenControl: false,
-          mapTypeControl:false,
-          zoomControl: false,
-          streetViewControl:false,
-          scaleControl:false,
-      });
-
-     var linkedFunc=App.Modules.GPS.onUpdate(function(state,position){
-        if( state==App.Modules.GPS.STATES.ON){ 
-          var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              };
-
-          _map.setCenter(pos);
-          _map.setZoom(18);
-          // TO KILL THIS LISTENER
-          linkedFunc();
-        }
-     });
-  }
-
-  // TO PRINT EVERY TIME IS AN UPDATE
-  (function(){
-      // FOR PRINT GPS ON MAP
-      var deviceGps=document.getElementById("deviceGps");  
-      
-      // ON AN UPDATE
-      function _onUpdate(state,position){
-        var GPS_STATES=App.Modules.GPS.STATES; 
-
-        if( state==GPS_STATES.NOT_SUPPORTED){ 
-          deviceGps.innerHTML = "Geolocation is not supported by this browser.";
-        
-        }else if(  state==GPS_STATES.OFF){
-            deviceGps.innerHTML ="GPS IS OFF";
-        }else if( state==GPS_STATES.ON){
-          deviceGps.innerHTML = "Latitude: " + position.coords.latitude + 
-          "<br>Longitude: " + position.coords.longitude; 
-        }else if( state==GPS_STATES.IDLE){
-          // JUST CALM DOWN YO
-        } 
-
-      }
-
-      App.Modules.GPS.onUpdate(_onUpdate);
-  })()
-  _loadAsyncScript();
-}
 
 
  /**
