@@ -49,7 +49,7 @@
 
             var scriptMap = document.createElement("script");
             scriptMap.type = 'text/javascript';
-            scriptMap.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyD9tk6Aosm9E7iFDnKeJNTAG5EdAOoVSBY";
+            scriptMap.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyD9tk6Aosm9E7iFDnKeJNTAG5EdAOoVSBY&v=3.exp";
             scriptMap.onload = _onAsyncScriptLoad;
             document.body.appendChild(scriptMap);
 
@@ -68,6 +68,9 @@
                 zoomControl: false,
                 streetViewControl: false,
                 scaleControl: false,
+                heading:90,
+                rotateControl:true,
+                //gestureHandling: 'cooperative'
             };
             if (App.Modules.GPS.state == App.Modules.GPS.ON) {
                 mapOps.center = {

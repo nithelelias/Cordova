@@ -12,6 +12,7 @@
     "dependencies": {
         "cordova-android": "^6.2.3",
         "cordova-browser": "^4.1.0",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-autostart": "git+https://github.com/ToniKorin/cordova-plugin-autostart.git",
         "cordova-plugin-background-mode": "^0.7.2",
         "cordova-plugin-device": "^1.1.6",
@@ -30,7 +31,8 @@
         },
         "platforms": [
             "android",
-            "browser"
+            "browser",
+            "ios"
         ]
     }
 }
