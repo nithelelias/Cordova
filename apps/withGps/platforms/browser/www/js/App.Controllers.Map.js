@@ -4,6 +4,7 @@
         App.Controllers.Map = new MapController();
     });
 
+ 
     /**
       INITIALIZE MAP
     */
@@ -11,7 +12,7 @@
 
     	var _this=this;
         var _map = null;
-       	var printGpsDiv = document.getElementById("deviceGps");
+       
         var UserMarker={
         	 symbol : {
 	          path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
@@ -42,6 +43,19 @@
         	return UserMarker;
         }
 
+       function get_last_position(){
+            try{
+                return localStorage.hasOwnProperty("App.Controllers.last.pos")?
+                JSON.parse(localStorage["App.Controllers.last.pos"]):null;
+            }catch(e){
+                return null;
+            }
+            
+        }
+
+        function save_last_position(pos){
+            localStorage["App.Controllers.last.pos"]=JSON.stringify(pos);
+        }
         /**
 			ESTE METODO privado CARGA EL SCRIPT ASYNCRONIZMANETE
   		*/
@@ -60,9 +74,9 @@
         */
         function _onAsyncScriptLoad() {
             var mapOps = {
-                //center: {lat: -34.397, lng: 150.644},
+                center: get_last_position(),
                 scrollwheel: false,
-                //  zoom: 8,
+                zoom: get_last_position()!=null?18:8,
                 fullscreenControl: false,
                 mapTypeControl: false,
                 zoomControl: false,
@@ -72,12 +86,8 @@
                 rotateControl:true,
                 //gestureHandling: 'cooperative'
             };
-            if (App.Modules.GPS.state == App.Modules.GPS.ON) {
-                mapOps.center = {
-                    lat: App.Modules.GPS.position.latitude,
-                    lng: App.Modules.GPS.position.longitude
-                };
-            } else {
+
+            if(get_last_position()==null){
                 var linkedFunc = App.Modules.GPS.onUpdate(function(GPS) {
 
                     if (GPS.state == GPS.STATES.ON) {
@@ -94,8 +104,12 @@
                 });
             }
 
+          
             _map = new google.maps.Map(document.getElementById('map'), mapOps);
-
+            if(get_last_position()!=null){
+                _showMyMarkerPosition();    
+            }
+            
 
         }
 
@@ -105,9 +119,20 @@
 
             // ON AN UPDATE
             function _onUpdate(GPS) {
+                var position;
+                if(GPS!=null && GPS.position!=null){
+                    position={
+                        lat:  GPS.position.latitude,
+                        lng:  GPS.position.longitude
+                        };
 
-            	_showMyMarkerPosition(GPS);
-                _printCurrentGPSStatus(GPS);
+                    // TO SAVE LAST POSITION
+                    save_last_position(position);
+                }
+
+            	
+                _showMyMarkerPosition();
+                _printCurrentGPSStatus(GPS); 
 
             }
 
@@ -120,21 +145,22 @@
 			Este metodo muestra el marcador del usuario actualmente
         */
        
-        function _showMyMarkerPosition(GPS){
-        	if( getMap()!=null && GPS!=null && GPS.state == GPS.STATES.ON){
+        function _showMyMarkerPosition(){
+            
+            var position=get_last_position();
+
+        	if( getMap()!=null && position!=null){
 	 			try{
+                    
 			       if(UserMarker.marker==null){
 				        UserMarker.marker = new google.maps.Marker({
-				          position: GPS.position,
+				          position: position,
 				        //  icon: UserMarker.symbol,
 				          map: getMap()
 				        });
 				    }
 
-				    UserMarker.marker.setPosition({
-                    lat:  GPS.position.latitude,
-                    lng:  GPS.position.longitude
-                });
+				    UserMarker.marker.setPosition(position);
 			    }catch(e){
 			    	console.error(e);
 			    }
@@ -145,6 +171,8 @@
         // FOR PRINT GPS ON MAP 
         function _printCurrentGPSStatus(GPS) {
             try {
+               
+                printGpsDiv = document.getElementById("deviceGps");
                 if (GPS != null) {
                     if (GPS.state == GPS.STATES.NOT_SUPPORTED) {
                         printGpsDiv.innerHTML = "Geolocation is not supported by this browser.";
@@ -160,7 +188,7 @@
                     } else {
                         printGpsDiv.innerHTML = "UPPS... ";
                     }
-                }
+                } 
             } catch (e) {
                 console.error(e);
             }
