@@ -1,0 +1,29 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-autostart": {
+            "PACKAGE_NAME": "com.example.with.gps"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.example.with.gps"
+        },
+        "cordova-plugin-mauron85-background-geolocation": {
+            "ALWAYS_USAGE_DESCRIPTION": "This app requires background location tracking",
+            "PACKAGE_NAME": "com.example.with.gps"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.example.with.gps"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.example.with.gps"
+        }
+    }
+}
