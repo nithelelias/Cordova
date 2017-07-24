@@ -6,7 +6,7 @@
     <feature name="BackgroundMode">
         <param name="browser-package" value="BackgroundMode" />
     </feature>
-    <name>HelloCordova</name>
+    <name>Demo</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>

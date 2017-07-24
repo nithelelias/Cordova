@@ -1,8 +1,9 @@
 (function() {
-
-    App.on('App.build', function(e) {
+ 
+    App.on('App.build.map', function(e) {
         App.Controllers.Map = new MapController();
     });
+ 
 
  
     /**
@@ -132,7 +133,7 @@
 
             	
                 _showMyMarkerPosition();
-                _printCurrentGPSStatus(GPS); 
+                //_printCurrentGPSStatus(GPS); 
 
             }
 
@@ -197,9 +198,5 @@
 
 
     } // END CONTROLLER
-
-
-
-
 
 })();

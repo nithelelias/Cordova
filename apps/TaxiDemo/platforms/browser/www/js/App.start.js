@@ -186,7 +186,7 @@ function setUpGeolocation(){
     */
     var callbackFn = function(location) {
    
-        console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+        //console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
           App.Modules.GPS.state=App.Modules.GPS.STATES.ON;
           App.Modules.GPS.position=location;
           App.Modules.GPS.history.push(location);
@@ -209,7 +209,7 @@ function setUpGeolocation(){
     var failureFn = function(error) {
         App.Modules.GPS.state=App.Modules.GPS.STATES.ERROR;
         App.Modules.GPS.errorMsg=error;
-        console.log('BackgroundGeolocation error'); 
+        //console.log('BackgroundGeolocation error'); 
           _dispatchUpdateCallbacks();
     };
 
