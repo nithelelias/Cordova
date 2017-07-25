@@ -32,45 +32,60 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-
-        <title>Hello World</title>
-         <meta name="viewport" content="initial-scale=1.0">
-        <meta charset="utf-8">
-        <style>
-          /* Always set the map height explicitly to define the size of the div
-           * element that contains the map. */
-          #map {
-            height: 100%;
-            
-
-
-          }
-          /* Optional: Makes the sample page fill the window. */
-          html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
-          #deviceGps{
-           position: fixed;
-            bottom: 1px;
-            width: 300px;
-            left: 1px;
-            z-index: 100;
-            background: grey;
-          }
-        </style>
-    </head>
-    <body>
-     <div id="deviceGps">      ESPERANDO GPS </div> 
-          <div id="map"> 
-                ESPERANDO MAPA
-          </div>
-
-        <script type="text/javascript" src="cordova.js"></script> 
-        <script type="text/javascript" src="js/index.js?v=1.2"></script>
-        <script type="text/javascript" src="js/App.Controllers.Map.js?v=1"></script>
      
+
+        <link rel="icon" href="img/logo.png"  />
+        <title>Taxi Demo App</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta charset="utf-8">
+        
+        <!-- LINKED CSS -->
+        <link type="text/css" rel="stylesheet" href="assets/fonts/awesome/css/font-awesome.min.css" >
+        <link type="text/css" rel="stylesheet" href="assets/materialize/css/material-icon.css" >
+        <link type="text/css" rel="stylesheet" href="assets/materialize/css/materialize.min.css" >
+        <link type="text/css" rel="stylesheet" href="assets/animate.min.css" >
+        <!-- CUSTOM CSS -->
+           <link rel="stylesheet" type="text/css" href="css/index.css">
+        
+    </head>
+    <body ng-controller="mainController as mainCtrl">
+  
+        <!-- splash -->
+      
+        <div id="splash">
+            <div class="progress  grey lighten-2" style="margin:0px;padding-top:0px;">
+                <div class="indeterminate black"></div>
+            </div>
+            <div   class="center  animated bounceInDown">
+              <img src="img/logo.png" style="  max-width: 50%;  margin-top: 100px;">  
+            </div>
+        </div>
+
+        
+
+        <!-- MAIN PAGE -->
+        <ng-include class=" full-height full-width" src="mainCtrl.View.url"></ng-include>  
+
+     
+
+      <!-- EXPECTING LIBRERIAS -->
+      <build>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="assets/jquery/jquery.min.js"></script>     
+        <script type="text/javascript" src="assets/socket/socket.io.js"></script> 
+        <script type="text/javascript" src="assets/angular/angular.min.js"></script>        
+        <script type="text/javascript" src="assets/angular/angular-touch.min.js"></script> 
+        <script type="text/javascript" src="assets/materialize/js/materialize.min.js" > </script>   
+        <script type="text/javascript" src="assets/momentjs/moment.js" > </script> 
+        <!-- STARTING CORDOVA HERER -->
+        <script type="text/javascript" src="js/App.start.js?v=1"></script>
+        <!-- STARTING ANGULAR MODULE -->
+        <script type="text/javascript" src="js/App.angular.js?v=1"></script>   
+        <script type="text/javascript" src="js/App.Views.js?v=1"></script>  
+        <script type="text/javascript" src="js/App.Models.js?v=1"></script>           
+        <script type="text/javascript" src="js/App.Services.js?v=1"></script>     
+        <script type="text/javascript" src="js/App.Controllers.js?v=1"></script>      
+        <script type="text/javascript" src="js/App.Directives.js?v=1"></script>      
+        <build>
     </body>
 </html>

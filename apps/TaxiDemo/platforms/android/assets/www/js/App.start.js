@@ -32,6 +32,7 @@ var App = {
      
         setUpBackground();
         setUpGeolocation();
+        App.Device=device;
         
         // DISPATCH 
        this.broadcast("App.build");
@@ -236,6 +237,15 @@ function setUpGeolocation(){
    
 }
  
+ App.Console={
+
+    log:function(m){
+      console.log(m); 
+    },
+    error:function(e){
+      console.error(e); 
+    }
+ };
 
 
 
