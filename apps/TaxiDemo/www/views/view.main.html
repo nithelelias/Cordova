@@ -1,6 +1,48 @@
-
-<div id="map" ng-controller="mapController as mapCtrl">
-
- 
-
+<div ng-controller="mapController as mapCtrl">
+	<!-- CONTROLS -->
+	<div id="pac-input-wrapper" class=""  ng-hide="mapCtrl.travel.visible">
+		<div class="card  "  >
+			<input id="pac-input" class="controls" type="text"
+			   	placeholder="Enter a location" 
+			   	ng-model="searchTxt"
+				ng-focus="mapCtrl.places_board.show()">
+			<a class="waves-effect right   " ng-show="mapCtrl.places_board.visible && mapCtrl.places_board.open" ng-click="mapCtrl.places_board.hide();" style="padding:10px;">
+			 <i class="material-icons white-text">close</i></a>
+		</div>
+	</div>
+	<div id="pac-travel-controls" class="light-blue animated fadeInDown" ng-show="mapCtrl.travel.visible" >
+		
+		<a class="waves-effect right grey-text "  ng-click="mapCtrl.travel.unset();" style="padding:10px;"> <i class="material-icons white-text">close</i></a>
+		
+		<div class="container" style="padding-top:30px;" >
+			<div class="row">
+				<label class="white-text">Desde:</label>&nbsp;<span class="black-text"> {{mapCtrl.travel.fromPlace.place.formatted_address}}</span>
+			</div> 
+			<hr>
+			<div class="row">
+				<label class="white-text">Destino:</label>&nbsp;<span class="black-text"> {{mapCtrl.travel.toPlace.place.formatted_address}}</span>
+			</div> 
+			<small > Puede cambiar el punto de partida arrastrando el marcador </small>
+		</div>
+	</div>
+	<div id="pac-centerMe" ng-show="mapCtrl.centerMe.visible" class="animated {{mapCtrl.centerMe.animate}}">
+	  <a class="btn-floating  waves-effect waves-light white" ng-click="mapCtrl.centerUser()">
+	  	<i class="material-icons grey-text text-darken-2">gps_fixed</i>
+	  </a> 
+	</div>
+	<!-- MAP -->
+	<div id="map" > 	</div>
+	<!-- VIEW FOR PLACES -->
+	<div id="places_board" 
+	class="card full-view  animated {{mapCtrl.places_board.animate}} grey lighten-5" 
+		ng-show="mapCtrl.places_board.visible">   
+		<br>
+		 <ul class="collection white" >
+  		    <li class="collection-item avatar" ng-repeat="item in mapCtrl.places_board.places" ng-click="mapCtrl.selectPlace(item)" ng-if="item!=null">
+  		  		<img src="{{item.icon}}" alt="" class="circle" style="width:35px;">
+  		      	<span class="title">{{item.name}}</span>
+  		    	<p>{{item.formatted_address}}</p>
+  		    </li>
+  		</ul>
+	</div>
 </div>

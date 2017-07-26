@@ -1,6 +1,29 @@
-
-<div id="map" ng-controller="mapController as mapCtrl">
-
- 
-
+<div ng-controller="mapController as mapCtrl">
+	<!-- CONTROLS -->
+	<div id="pac-input-wrapper" class="" >
+		<div class="card  "  >
+			<input id="pac-input" class="controls" type="text"
+			   	placeholder="Enter a location" 
+				ng-focus="mapCtrl.places_board.show()">
+			<a class="waves-effect right grey-text " ng-show="mapCtrl.places_board.visible && mapCtrl.places_board.open" ng-click="mapCtrl.places_board.hide()" style="padding:10px;"> <i class="material-icons">close</i></a>
+		</div>
+	</div>
+	<div id="pac-centerMe" ng-show="mapCtrl.centerMe.visible" class="animated {{mapCtrl.centerMe.animate}}">
+	  <a class="btn-floating  waves-effect waves-light white" ng-click="mapCtrl.centerUser()">
+	  	<i class="material-icons grey-text text-darken-2">gps_fixed</i>
+	  </a> 
+	</div>
+	<!-- MAP -->
+	<div id="map" > 	</div>
+	<!-- VIEW FOR PLACES -->
+	<div id="places_board" 
+	class="card full-view  animated {{mapCtrl.places_board.animate}} grey lighten-5" 
+		ng-show="mapCtrl.places_board.visible">   
+		<br>
+		 <ul class="collection white" >
+  		    <li class="collection-item" ng-repeat="item in mapCtrl.places_board.predictions">
+  		    	{{item.description}}
+  		    </li>
+  		</ul>
+	</div>
 </div>
