@@ -167,6 +167,12 @@ main {
     height: 100%;
     width: 100%;
 }
+.no-margin{
+    margin: 0px !important;
+}
+.no-padding{
+    padding: 0px !important;
+}
 #splash {
     position: fixed;
     top: 0px;
@@ -212,7 +218,18 @@ main {
     border-bottom: none !important;
     box-shadow:none !important;
   }
-
+#pac-travel-controls{
+      width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 3;
+}
+#pac-travel-controls>.container {
+    width: 300px;
+    margin: 10px auto;
+    padding: 5px 4px 5px 10px;
+}
 #places_board {
     position: absolute;
     margin: 0px;

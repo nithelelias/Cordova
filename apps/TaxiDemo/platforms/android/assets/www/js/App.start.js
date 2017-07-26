@@ -232,8 +232,10 @@ function setUpGeolocation(){
 
   if(App.isMobile.any()){
     MobileHandler();
-  } 
+  }  
+
   NavigatorHandler();
+  
    
 }
  

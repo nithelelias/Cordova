@@ -11,6 +11,10 @@
 		"main":{
 			"name":"Main view with map",
 			"url":"views/view.main.html"
+		},
+		"mobile":{
+			"name":"Main view with map",
+			"url":"views/view.mobile.html"
 		}
 
 

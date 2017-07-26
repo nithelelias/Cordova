@@ -1,11 +1,50 @@
 <div ng-controller="mapController as mapCtrl">
 	<!-- CONTROLS -->
-	<div id="pac-input-wrapper" class="" >
+	<div id="pac-input-wrapper" class=""  ng-hide="mapCtrl.travel.visible">
 		<div class="card  "  >
 			<input id="pac-input" class="controls" type="text"
 			   	placeholder="Enter a location" 
+			   	ng-model="searchTxt"
 				ng-focus="mapCtrl.places_board.show()">
-			<a class="waves-effect right grey-text " ng-show="mapCtrl.places_board.visible && mapCtrl.places_board.open" ng-click="mapCtrl.places_board.hide()" style="padding:10px;"> <i class="material-icons">close</i></a>
+			<a class="waves-effect right   " ng-show="mapCtrl.places_board.visible && mapCtrl.places_board.open" ng-click="mapCtrl.places_board.hide();" style="padding:10px;">
+			 <i class="material-icons white-text">close</i></a>
+		</div>
+	</div>
+	<div id="pac-travel-controls" class="light-blue animated fadeInDown" ng-show="mapCtrl.travel.visible" >
+		
+		<a class="waves-effect right grey-text "  ng-click="mapCtrl.travel.unset();" style="padding:10px;"> <i class="material-icons white-text">close</i></a>
+		
+		<div class="container" style="padding-top:30px;" >
+			<div class="row no-margin">
+				<div class="col s1">
+					<div class="row">
+						<i class="material-icons  white-text">person_pin</i> 
+				 
+						<i class="material-icons white-text">more_vert</i>
+				 
+						<i class="material-icons white-text">place</i>
+					</div>
+				</div>
+				<div class="col s10 ">
+					<div class=" full-width  waves-effect waves-light light-blue  lighten-1" style="padding:3px;margin-bottom:5px;" ng-click="mapCtrl.travel.fromPlace.zoom()">
+				 		<small class="black-text"> {{mapCtrl.travel.fromPlace.place.formatted_address}}
+				 		</small>
+					</div>
+					 
+			 		<div class="  full-width  waves-effect waves-light light-blue  lighten-1"  style="padding:3px;" ng-click="mapCtrl.travel.toPlace.zoom()">
+						<small class="black-text"> {{mapCtrl.travel.toPlace.place.formatted_address}}</small>
+					</div>
+				</div>
+				
+			</div> 
+			<div class="row no-margin">
+				<div class="chip white"> 
+				<i class="material-icons light-blue-text">access_time</i>
+					15min
+				 </div>
+
+			</div>
+			<small > Puede cambiar el punto de partida arrastrando el marcador </small>
 		</div>
 	</div>
 	<div id="pac-centerMe" ng-show="mapCtrl.centerMe.visible" class="animated {{mapCtrl.centerMe.animate}}">
@@ -21,8 +60,10 @@
 		ng-show="mapCtrl.places_board.visible">   
 		<br>
 		 <ul class="collection white" >
-  		    <li class="collection-item" ng-repeat="item in mapCtrl.places_board.predictions">
-  		    	{{item.description}}
+  		    <li class="collection-item avatar"  ng-repeat="item in mapCtrl.places_board.places" ng-if="item!=null" ng-click="mapCtrl.selectPlace(item)" >
+  		  		<img  ng-if="item!=null" src="{{item.icon}}" alt="" class="circle" style="width:35px;" >
+  		      	<span class="title">{{item.name}}</span>
+  		    	<p>{{item.formatted_address}}</p>
   		    </li>
   		</ul>
 	</div>

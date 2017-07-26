@@ -1,5 +1,5 @@
 (function(){
-
+  console.log("App.controllers load");
     angular.module('MainApp')
     // MAIN CONTROLLER
    .controller("mainController", ["$scope",  "auth",function($scope,auth) {
@@ -62,7 +62,7 @@
 
       if(auth.validate()){
           // CONTINUE TO MAIN PAGE
-           init_view(App.Angular.Views.main);
+           init_view(App.Angular.Views.main); 
        }else{
           // CONTINUE TO LOGIN PAGE
           init_view(App.Angular.Views.login);
@@ -89,7 +89,9 @@
          // AHORA 4 SEGUNDOS PARA IR AL MAIN.
          setTimeout(function(){
             _this.waitinOperation=false;
-            App.broadcast('App.showView',App.Angular.Views.main);
+            document.location.reload();
+            
+
          },4000);
       }
 
